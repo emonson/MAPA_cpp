@@ -10,7 +10,7 @@ pieces of code to test the functionality and syntax of the libraries
 during development.
 
 Tested on OS X 10.9, Ubuntu 14 64-bit, and Windows 7 64-bit with MS Visual
-Studio 2012.
+Studio Professional 2013.
 
 Output is an XML file describing clusters of documents which can be
 imported into Jigsaw http://www.cc.gatech.edu/gvu/ii/jigsaw/
