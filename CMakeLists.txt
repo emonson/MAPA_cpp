@@ -30,16 +30,10 @@ INCLUDE_DIRECTORIES( ${MAPA_BINARY_DIR} )
 
 set(MAPA_INCLUDE_DIRS 
    ${MAPA_SOURCE_DIR}/lib/ 
-   ${MAPA_SOURCE_DIR}/lib/Sam/utils 
-   ${MAPA_SOURCE_DIR}/lib/Sam/statistics 
-   ${MAPA_SOURCE_DIR}/lib/Sam/metrics  
-   ${MAPA_SOURCE_DIR}/lib/Sam/linalg
-   ${MAPA_SOURCE_DIR}/lib/Sam/io 
    ${MAPA_SOURCE_DIR}/lib/igl 
    ${MAPA_SOURCE_DIR}/lib/tclap 
    ${MAPA_SOURCE_DIR}/lib/ann/ANN/
    ${MAPA_SOURCE_DIR}/lib/tinyxml2/
-   ${MAPA_SOURCE_DIR}/lib/redsvd-0.2.0/src/
    ${MAPA_SOURCE_DIR}/lib/boost_1_55_0/
    ${MAPA_SOURCE_DIR}/lib/SVDLIBC/
    ${MAPA_SOURCE_DIR}/src/include/
@@ -57,9 +51,6 @@ set(SVD_LINK_DIR
 )
 set(TINYXML2_LINK_DIR 
    ${MAPA_SOURCE_DIR}/lib/tinyxml2/
-)
-set(REDSVD_LINK_DIR 
-   ${MAPA_SOURCE_DIR}/lib/redsvd-0.2.0/build/default/src/
 )
 
 ADD_SUBDIRECTORY(lib)
