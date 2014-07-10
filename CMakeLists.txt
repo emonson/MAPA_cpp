@@ -54,7 +54,6 @@ set(TINYXML2_LINK_DIR
 )
 
 ADD_SUBDIRECTORY(lib)
-ADD_SUBDIRECTORY(tests)
 
 option(BUILD_APP_MAPA_CLUSTERING "Build main MAPA Jigsaw document clustering application" ON)
 if(BUILD_APP_MAPA_CLUSTERING)

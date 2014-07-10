@@ -5,9 +5,7 @@ included in the lib/ directory.
 
 CMake is used for the build system. Build out of source from the root
 directory. The main MAPA clustering application and custom code is in 
-the src/ directory. The tests/ directory is not unit tests, but small
-pieces of code to test the functionality and syntax of the libraries
-during development.
+the src/ directory.
 
 Tested on OS X 10.9, Ubuntu 14 64-bit, and Windows 7 64-bit with MS Visual
 Studio Professional 2013.
