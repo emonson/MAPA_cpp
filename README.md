@@ -4,24 +4,54 @@
 
 This is a C++ implementation of MAPA Code based on Mauro Maggioni & Guangiang Chen's 
 Matlab code, specifically targeted to perform text-based document clustering to be
-imported into the Jigsaw Visual Analytics plaform from John Stasko's lab at Georgia
-Tech (see more details below). A PDF of the original paper describing the algorithm can be obtained 
+imported into the [Jigsaw Visual Analytics plaform for Exploring and Understanding 
+Document Collections][Jigsaw] from [John Stasko's lab at Georgia Institute of Technology][Stasko].
+A PDF of the original paper describing the algorithm can be obtained 
 from http://www.math.duke.edu/~mauro/Papers/mapa_for_cvpr2011.pdf
+
+This is a command line application with many adjustable options (see Usage below) which
+can read in a document corpus which is either stored in a Jigsaw .jig data file, or as a 
+collection of text documents in a directory. The output is an XML file describing the 
+document clusters, which can be imported into Jigsaw.
 
 A modified version of the Matlab code is included in this repository in
 the `matlab/` directory. The original code can be obtained from
 Guangliang Chen's old Duke page at http://www.math.duke.edu/~glchen/mapa.html
 
+[Jigsaw]: http://www.cc.gatech.edu/gvu/ii/jigsaw/ "Jigsaw: Visual Analytics for Exploring and Understanding Document Collections"
+[Stasko]: http://www.cc.gatech.edu/home/stasko/ "John Stasko's lab at Georgia Tech"
+
+
 ### System Requirements
 
-Tested on OS X 10.9, Ubuntu 14 64-bit, and Windows 7 64-bit with MS Visual
-Studio Professional 2013.
+The code will build, and has been tested on OS X 10.9, Ubuntu 14 64-bit, 
+and Windows 7 64-bit with MS Visual Studio Professional 2013. 
 
-**Git**
+[CMake][] is used for the build system, and in principle 
+is the only external requirement that isn't included with the repository 
+besides compilers.
 
-**[CMake][]** is used for the build system. Build out of source from the root
-directory. The main MAPA clustering application and custom code is in 
-the src/ directory.
+
+### Building
+
+- #### Mac OS X
+On Mac OS X (tested on 10.9), 
+
+- #### Ubuntu
+
+- #### Windows 7
+
+
+### Usage
+
+
+
+### Support
+
+This work was developed with support from the NSF FODAVA (Mathematical Foundations
+of Visual Analytics) program grant, "Mathematical Foundations of Multiscale Graph Representations 
+and Interactive Learning", NSF-CCF-11-32184. 
+
 
 ### Dependencies (all included)
 
@@ -44,32 +74,6 @@ included in the `lib/` directory.
 [SVDLIBC]: http://tedlab.mit.edu/~dr/SVDLIBC/ "SVDLIBC"
 [ANN]: http://www.cs.umd.edu/~mount/ANN/ "ANN"
 
-
-### Jigsaw Visual Analytics Platform
-
-Output is an XML file describing clusters of documents which can be
-imported into Jigsaw 
-
-[Jigsaw: Visual Analytics for Exploring and Understanding Document Collections](http://www.cc.gatech.edu/gvu/ii/jigsaw/)
-
-[John Stasko](http://www.cc.gatech.edu/home/stasko/)
-
-### Usage
-
-
-### Building
-
-#### Mac OS X
-
-#### Ubuntu
-
-#### Windows 7
-
-### Support
-
-This work was developed with support from the NSF FODAVA (Mathematical Foundations
-of Visual Analytics) program grant, "Mathematical Foundations of Multiscale Graph Representations 
-and Interactive Learning", NSF-CCF-11-32184. 
 
 ### More complete code
 
