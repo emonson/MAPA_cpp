@@ -44,7 +44,74 @@ On Mac OS X (tested on 10.9),
 
 ### Usage
 
+```
+   ./mapa_clustering  {-K <integer > 0>|--kmax <integer >= 0>} [-D <integer
+                      > 0>] [-V] [--dhard <integer >= 0>] [--dmax <integer
+                      >= 0>] [--n0 <integer > 0>] [-a <space-delimited
+                      string>] [-s <integer >= 0>] [-n <integer > 0>] [-c
+                      <integer > 0>] [-l <integer > 1>] [-o <integer > 0>]
+                      [--] [--version] [-h] <text data directory>
 
+
+Where: 
+
+   -K <integer > 0>,  --K <integer > 0>
+     (OR required)  Number of clusters
+         -- OR --
+   --kmax <integer >= 0>
+     (OR required)  Maximum number of clusters
+
+
+   -D <integer > 0>,  --dim_reduced <integer > 0>
+     Dimensionality to reduce original data to with SVD (default = K *
+     dmax)
+
+   -V,  --verbose
+     Verbose output
+
+   --dhard <integer >= 0>
+     Forced hard limit on max dimensionality of each cluster (default =
+     none)
+
+   --dmax <integer >= 0>
+     Suggested limit on dimensionality of each cluster (default = 6)
+
+   --n0 <integer > 0>
+     Number of seed points (default = 20 * K)
+
+   -a <space-delimited string>,  --add_stopwords <space-delimited string>
+     Space-delimited string in quotes of extra stopwords to add
+
+   -s <integer >= 0>,  --n_stop_labels <integer >= 0>
+     Number of clusters center labels to ignore when generating cluster
+     labels (default = 10)
+
+   -n <integer > 0>,  --n_cluster_labels <integer > 0>
+     Number of cluster keyword labels in XML (default = 3)
+
+   -c <integer > 0>,  --min_term_count <integer > 0>
+     Minimum term count per document (default = 2)
+
+   -l <integer > 1>,  --min_term_length <integer > 1>
+     Minimum number of characters for a term (default = 3)
+
+   -o <integer > 0>,  --outfile <integer > 0>
+     Path (name) of output .xml file (default path.xml)
+
+   --,  --ignore_rest
+     Ignores the rest of the labeled arguments following this flag.
+
+   --version
+     Displays version information and exits.
+
+   -h,  --help
+     Displays usage information and exits.
+
+   <text data directory>
+     Path to .jig file or directory of text files
+
+
+```
 
 ### Support
 
