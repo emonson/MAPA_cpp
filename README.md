@@ -34,83 +34,174 @@ besides compilers.
 
 ### Building
 
-- #### Mac OS X
-On Mac OS X (tested on 10.9), 
+The point of using [CMake][], if you haven't used it before, is that you can use the
+same set of configuration files to generate the proper build instructions for all
+platforms. So, on OS X it can gerate a Makefile (or XCode project – not demonstrated here)
+while on Windows you can generate a MS Visual Studio project file. CMake encourages 
+"out of source" builds, which means you should create a new directory for the build
+products, not build right in the repository source directory. Often I will just create
+a `build/` directory right in the original source directory. This keeps the project together
+but sequesters the build files in a separate place.
 
-- #### Ubuntu
+- #### Mac OS X (tested on 10.9, "Mavericks"). 
+At a minimum you'll need [CMake][] and the XCode command-line tools. 
+The former I tend to install these days using the [homebrew][]
+package manager, but you can also download it directly from the development repository.
+If you don't have the latter (which includes things like the `gcc` compiler), you can
+type `xcode-select --install` in a terminal and the system should start a GUI for downloading.
+If you want to pull directly from the GitHub repository you'll also need git, which
+can be installed easily with [homebrew][] also, or from [this git site][git].
 
-- #### Windows 7
+- #### Ubuntu (tested on v 14, 64-bit)
+Building on Ubuntu is almost identical to building on OS X, as above. The only difference
+is in installing the necessary dependencies ahead of time.
+
+    ```
+    sudo apt-get install git
+    sudo apt-get install cmake
+    sudo apt-get install cmake-curses-gui
+    sudo apt-get install build-essential
+    ```
+
+- #### Windows 7 (tested on 64-bit)
+
+
+[homebrew]: http://brew.sh/ "homebrew"
+[git]: http://git-scm.com/ "git"
 
 
 ### Usage
 
 ```
-   ./mapa_clustering  {-K <integer > 0>|--kmax <integer >= 0>} [-D <integer
-                      > 0>] [-V] [--dhard <integer >= 0>] [--dmax <integer
-                      >= 0>] [--n0 <integer > 0>] [-a <space-delimited
-                      string>] [-s <integer >= 0>] [-n <integer > 0>] [-c
-                      <integer > 0>] [-l <integer > 1>] [-o <integer > 0>]
-                      [--] [--version] [-h] <text data directory>
+mapa_clustering  {-K <integer>|--kmax <integer>} [-o <path string>]
+                 [--n0 <integer>] [-D <integer>] [--dmax <integer>]
+                 [--dhard <integer>] [--min_term_length <integer>]
+                 [--min_term_count <integer>] [--add_stopwords <string>] 
+                 [--n_cluster_labels <integer>]
+                 [--n_stop_labels <integer>] [-V] [--] [--version]
+                 [-h] <path string>
+```
 
+The minimum required for running is to set the number (or max number) of clusters
+to be formed, plus the name of either the `.jig` Jigsaw text corpus data file, or the
+name (path) of a directory containing just the text files, one per document in the corpus,
+that you want clustered.
 
-Where: 
-
-   -K <integer > 0>,  --K <integer > 0>
+```
+   -K <integer>,  --K <integer>
      (OR required)  Number of clusters
          -- OR --
-   --kmax <integer >= 0>
+   --kmax <integer>
      (OR required)  Maximum number of clusters
+```
 
+In principle the MAPA algorithm will find the "number of clusters" automatically, without
+having to specify a number, but in practice that works better with image data than with
+text documents as in this implementation. (The algorithm would set a very large number
+of clusters in many cases if you let it.) So, in most cases you might as well set the number
+of clusters you want with the `-K` option.
 
-   -D <integer > 0>,  --dim_reduced <integer > 0>
-     Dimensionality to reduce original data to with SVD (default = K *
-     dmax)
+```
+   -o <path string>,  --outfile <path string>
+     Path (name) of output .xml file (default <data_file_name>.xml)
+```
 
-   -V,  --verbose
-     Verbose output
+If no output name is set, the data input path will have any extension stripped off and 
+`.xml` appended. There will not be any warning for overwriting an existing file.
 
-   --dhard <integer >= 0>
-     Forced hard limit on max dimensionality of each cluster (default =
-     none)
+```
+   --n0 <integer>
+     Number of seed points (default = 20 * K)
+```
 
-   --dmax <integer >= 0>
+This algorithm isn't like k-means, where there is one seed point per cluster. MAPA needs
+many seed points per cluster, so the default value of `n0` is `20 * K`. You do want to minimize
+this value, though, since the algorithm scales with n0.
+
+```
+   -D <integer>,  --dim_reduced <integer>
+     Dimensionality to reduce original data to with SVD 
+     (default = K * dmax)
+```
+
+Since MAPA also scales with the original dimensionality of the data, it is not practical
+to analyze document data sets, which can easily have term vectors in the thousands of
+dimensions, directly in the original space. So, data dimensionality is reduced with SVD
+before analysis. In principle, this should be set at just greater than the sum of the 
+MAPA-derived dimensionalities of all of the clusters.
+
+```
+   --dmax <integer>
      Suggested limit on dimensionality of each cluster (default = 6)
 
-   --n0 <integer > 0>
-     Number of seed points (default = 20 * K)
+   --dhard <integer>
+     Forced hard limit on max dimensionality of each cluster (default = 10)
+```
 
-   -a <space-delimited string>,  --add_stopwords <space-delimited string>
-     Space-delimited string in quotes of extra stopwords to add
+The original MAPA algorithm had a parameter, `dmax`, which wasn't a hard cutoff on the 
+allowed dimensionality of the clusters, but instead was an estimate of the dimensionalities
+of the clusters, which helped set some other parameter values. Later in the algorithm
+there was a step where seed points were disregarded if they were found to have the ambient
+dimensionality of the system. I have found, though, that with document data sets I get
+much better clustering results (as well as execution times) if I set a hard limit of around
+10-d at that stage (otherwise, I get a few clusters with very high-D, which suck up most
+of the points, and it isn't very informative).
 
-   -s <integer >= 0>,  --n_stop_labels <integer >= 0>
-     Number of clusters center labels to ignore when generating cluster
-     labels (default = 10)
-
-   -n <integer > 0>,  --n_cluster_labels <integer > 0>
-     Number of cluster keyword labels in XML (default = 3)
-
-   -c <integer > 0>,  --min_term_count <integer > 0>
-     Minimum term count per document (default = 2)
-
-   -l <integer > 1>,  --min_term_length <integer > 1>
+```
+   --min_term_length <integer>
      Minimum number of characters for a term (default = 3)
 
-   -o <integer > 0>,  --outfile <integer > 0>
-     Path (name) of output .xml file (default path.xml)
+   --min_term_count <integer>
+     Minimum term count per document (default = 2)
 
-   --,  --ignore_rest
-     Ignores the rest of the labeled arguments following this flag.
+   --add_stopwords <string>
+     Space-delimited string in quotes of extra stopwords to add
+```
 
-   --version
-     Displays version information and exits.
+These options are used during the generation of the term-document matrix (TDM). Terms
+will be excluded that are under the minimum term length, or which occur less than the 
+minumum count per document, or which show up in the stopwords list. There is a built-in
+list of "stopwords" for english, but depending on your corpus you may want to add extra
+terms on the command line, separated by spaces within a single set of double-quotes.
 
+```
+   --n_cluster_labels <integer>
+     Number of cluster keyword labels in XML (default = 3)
+
+   --n_stop_labels <integer>
+     Number of clusters center labels to ignore when generating cluster
+     labels (default = 10)
+```
+
+Each cluster in the output `.xml` file includes a set number of terms which are 
+characteristic of the cluster (based on its center location), but we exclude a certain
+number of terms which are characteristic of the average cluster center. These latter
+terms are listed in the `.xml` file under a `<commonterms>` tag, but are not imported
+into Jigsaw.
+
+```
+   -V,  --verbose
+     Verbose output
+```
+
+Verbose output just prints more information in the terminal window during program
+execution.
+
+```
    -h,  --help
      Displays usage information and exits.
 
-   <text data directory>
-     Path to .jig file or directory of text files
+   <path string>
+     (required)  Path to .jig file or directory of text files
 
 
+EXAMPLES:
+
+./mapa_clustering -K 6 ../../data/InfovisVAST-papers.jig
+
+./mapa_clustering -K 12 -n_cluster_labels 5 -V -o sci_news_12 -n_stop_labels 0 
+    -add_stopwords "science news year years work university researchers new people scientists"
+    
 ```
 
 ### Support
